@@ -26,6 +26,10 @@
             android:name="com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.gxzzb.gxphotocontest.ui.photoenjoy.ActivityPhotoEnjoy"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
