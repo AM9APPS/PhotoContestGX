@@ -1,84 +1,85 @@
 package com.gxzzb.gxphotocontest.ui.photoshow;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.ui.photocamera.FragmentPhotoCamera;
+import com.gxzzb.gxphotocontest.ui.photoupload.FragmentPhotoUpload;
+import com.gxzzb.gxphotocontest.ui.photouser.FragmentPhotoUser;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-public class ActivityPhotoShow extends Activity {
-	TabHost tabHost;
+public class ActivityPhotoShow extends FragmentActivity {
+	FragmentTabHost fragmentTabHost;
 	TabWidget tabWidget;
 	String[] arrayitem = { "浏览作品", "我的作品", "拍照上传", "相册上传" };
+	Class[] fragmentArray = { FragmentPhotoflow.class, FragmentPhotoUser.class,
+			FragmentPhotoCamera.class, FragmentPhotoUpload.class };
+	int[] imagesitem = { R.drawable.photo_icon, R.drawable.user_icon,
+			R.drawable.camera_icon, R.drawable.upload_icon };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photoshow);
 
-		tabHost = (TabHost) findViewById(R.id.tabhost);
-		tabHost.setup();
+		initiView();
 
-		tabHost.addTab(tabHost.newTabSpec("tab0")
-				.setIndicator(getMenuItem(R.drawable.photo_icon, arrayitem[0]))
-				.setContent(R.id.linearLayout_photoshow));
-		tabHost.addTab(tabHost.newTabSpec("tab1")
-				.setIndicator(getMenuItem(R.drawable.user_icon, arrayitem[1]))
-				.setContent(R.id.linearLayout_photoshow));
-		tabHost.addTab(tabHost
-				.newTabSpec("tab2")
-				.setIndicator(getMenuItem(R.drawable.camera_icon, arrayitem[2]))
-				.setContent(R.id.linearLayout_photoshow));
-		tabHost.addTab(tabHost
-				.newTabSpec("tab3")
-				.setIndicator(getMenuItem(R.drawable.upload_icon, arrayitem[3]))
-				.setContent(R.id.linearLayout_photoshow));
-
-		tabWidget = tabHost.getTabWidget();
-
-		tabWidget.getChildAt(0).setOnClickListener(new Myevents());
-		tabWidget.getChildAt(1).setOnClickListener(new Myevents());
-		tabWidget.getChildAt(2).setOnClickListener(new Myevents());
-		tabWidget.getChildAt(3).setOnClickListener(new Myevents());
+		// fragmentTabHost.addTab(tabHost.newTabSpec("tab0")
+		// .setIndicator(getMenuItem(R.drawable.photo_icon, arrayitem[0]))
+		// .setContent(R.id.linearLayout_photo));
+		// tabHost.addTab(tabHost.newTabSpec("tab1")
+		// .setIndicator(getMenuItem(R.drawable.user_icon, arrayitem[1]))
+		// .setContent(R.id.linearLayout_user));
+		// tabHost.addTab(tabHost
+		// .newTabSpec("tab2")
+		// .setIndicator(getMenuItem(R.drawable.camera_icon, arrayitem[2]))
+		// .setContent(R.id.linearLayout_camera));
+		// tabHost.addTab(tabHost
+		// .newTabSpec("tab3")
+		// .setIndicator(getMenuItem(R.drawable.upload_icon, arrayitem[3]))
+		// .setContent(R.id.linearLayout_upload));
+		//
+		// tabWidget = tabHost.getTabWidget();
 
 	}
 
-	public View getMenuItem(int imgID, String textID) {
+	public void initiView() {
+
+		fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+		fragmentTabHost.setup(this, getSupportFragmentManager(),
+				R.id.frameLayout_content);
+
+		int count = fragmentArray.length;
+
+		for (int i = 0; i < count; i++) {
+
+			TabSpec tabSpec = fragmentTabHost.newTabSpec(arrayitem[i])
+					.setIndicator(getMenuItem(i));
+			// 将Tab按钮添加进Tab选项卡中
+			fragmentTabHost.addTab(tabSpec, fragmentArray[i], null);
+			// 设置Tab按钮的背景
+			fragmentTabHost.getTabWidget().getChildAt(i)
+					.setBackgroundResource(R.drawable.bottom_bar_bg);
+
+		}
+	}
+
+	public View getMenuItem(int i) {
 		LinearLayout ll = (LinearLayout) LayoutInflater.from(this).inflate(
 				R.layout.view_tab_item, null);
 		ImageView imgView = (ImageView) ll.findViewById(R.id.imageView_icon);
-		imgView.setBackgroundResource(imgID);
+		imgView.setBackgroundResource(imagesitem[i]);
 		TextView textView = (TextView) ll.findViewById(R.id.textView_icon);
-		textView.setText(textID);
+		textView.setText(arrayitem[i]);
 		return ll;
-	}
-
-	class Myevents implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			if (v == tabWidget.getChildAt(0)) {
-				System.out.println("aaa");
-			}
-			if (v == tabWidget.getChildAt(1)) {
-				System.out.println("bbb");
-			}
-			if (v == tabWidget.getChildAt(2)) {
-				System.out.println("ccc");
-			}
-			if (v == tabWidget.getChildAt(3)) {
-				System.out.println("ddd");
-			}
-
-		}
-
 	}
 
 }
