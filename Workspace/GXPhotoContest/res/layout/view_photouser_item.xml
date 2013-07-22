@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/imageView_user_item_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/user_item_bg" />
+
+    <ImageView
+        android:id="@+id/imageView_scroe_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignTop="@+id/imageView_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/imageView_content"
+        android:src="@drawable/scroe_icon" 
+        android:contentDescription="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/textView_scroe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView_scroe_icon"
+        android:layout_toRightOf="@+id/imageView_scroe_icon"
+        android:text="222" />
+
+    <TextView
+        android:id="@+id/textView_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView_scroe_icon"
+        android:layout_below="@+id/imageView_scroe_icon"
+        android:layout_marginTop="15dp"
+        android:text="textView_content" />
+
+    <ImageView
+        android:id="@+id/imageView_content"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/textView_user_tiem"
+        android:layout_toRightOf="@+id/imageView_user_item_bg"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/textView_user_tiem"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/imageView_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/user_time_bg"
+        android:gravity="right"
+        android:text="TextddddddddddddddView" />
+
+</RelativeLayout>
