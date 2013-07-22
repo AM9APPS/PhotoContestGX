@@ -20,7 +20,7 @@ public class FragmentPhotoflow extends Fragment {
 	// 数据总数
 	int resultCount = 1000;
 	// 每次加载数据总数
-	int eachCount = 3;
+	int eachCount = 9;
 	// 加载了多少次
 	int pageCount = 0;
 	// 第一次加载数
@@ -97,7 +97,7 @@ public class FragmentPhotoflow extends Fragment {
 				TextView textView = new TextView(inflater.getContext());
 				textView.setText("aadfdfdsffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffaaa");
 				imageView1
-						.setBackgroundResource(R.drawable.welcome_anter_btn_press);
+						.setBackgroundResource(R.drawable.ic_launcher);
 				linearLayout.addView(imageView1);
 				linearLayout.addView(textView);
 				int isitem = new Random().nextInt(3);
