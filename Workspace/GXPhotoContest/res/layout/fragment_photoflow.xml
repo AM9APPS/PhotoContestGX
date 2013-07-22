@@ -18,42 +18,27 @@
             android:orientation="horizontal" >
 
             <LinearLayout
+                android:id="@+id/linearLayout_photoflowleft"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/welcome_logo"
-                    android:contentDescription="@string/app_name" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout_photoflowcenter"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/back_arrow"
-                    android:contentDescription="@string/app_name" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout_photoflowright"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon"
-                    android:contentDescription="@string/app_name" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

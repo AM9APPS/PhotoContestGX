@@ -1,7 +1,6 @@
 package com.gxzzb.gxphotocontest.ui.main;
 
 import com.gxzzb.gxphotocontest.R;
-//import com.gxzzb.gxphotocontest.ui.photoenjoy.ActivityPhotoEnjoy;
 import com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow;
 
 import android.os.Bundle;

@@ -44,7 +44,7 @@ public class ListAdapterPhotoUser extends BaseAdapter {
 		if (null == convertView) {
 			convertView = layoutInflater.inflate(R.layout.view_list_item, null);
 		}
-		TextView textView = (TextView) convertView.findViewById(R.id.textView1);
+		TextView textView = (TextView) convertView.findViewById(R.id.textView_list_item);
 		textView.setText(data[position]);
 		return convertView;
 	}

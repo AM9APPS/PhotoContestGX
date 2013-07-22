@@ -60,7 +60,6 @@ public class ActivityPhotoShow extends FragmentActivity {
 		int count = fragmentArray.length;
 
 		for (int i = 0; i < count; i++) {
-
 			TabSpec tabSpec = fragmentTabHost.newTabSpec(arrayitem[i])
 					.setIndicator(getMenuItem(i));
 			// 将Tab按钮添加进Tab选项卡中
