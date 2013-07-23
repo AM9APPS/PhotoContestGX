@@ -3,7 +3,11 @@ package com.gxzzb.gxphotocontest.ui.photoshow;
 import java.util.Random;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
+import com.gxzzb.gxphotocontest.net.URLHelper;
+import com.gxzzb.gxphotocontest.ui.bin.UiItemProgressDialog;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,15 +44,19 @@ public class FragmentPhotoflow extends Fragment {
 
 	MyScrollViewEvents myScrollViewEvents = new MyScrollViewEvents();
 
+	ProgressDialog progressDialog;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.inflater = inflater;
+		progressDialog = new UiItemProgressDialog().getprogressDialog(inflater
+				.getContext());
 		View v = inflater
 				.inflate(R.layout.fragment_photoflow, container, false);
 		TextView textView_top = (TextView) v.findViewById(R.id.textView_top);
@@ -63,8 +71,8 @@ public class FragmentPhotoflow extends Fragment {
 		linearLayoutleft = (LinearLayout) v
 				.findViewById(R.id.linearLayout_photoflowleft);
 
-		 linearLayoutcenter = (LinearLayout) v
-		 .findViewById(R.id.linearLayout_photoflowcenter);
+		linearLayoutcenter = (LinearLayout) v
+				.findViewById(R.id.linearLayout_photoflowcenter);
 
 		linearLayoutright = (LinearLayout) v
 				.findViewById(R.id.linearLayout_photoflowright);
@@ -81,6 +89,12 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 
+		String httpUrl = URLHelper.URL_SJ_LIST + "?page=9&num=1";
+
+		HttpAsyncTask myhHttpAsyncTask = new HttpAsyncTask(
+				inflater.getContext(), progressDialog);
+		myhHttpAsyncTask.execute(httpUrl);
+
 		if (eachCount * pageCount < resultCount) {
 
 			for (int i = 0; i < eachCount; i++) {
@@ -96,8 +110,7 @@ public class FragmentPhotoflow extends Fragment {
 				ImageView imageView1 = new ImageView(inflater.getContext());
 				TextView textView = new TextView(inflater.getContext());
 				textView.setText("aadfdfdsffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffaaa");
-				imageView1
-						.setBackgroundResource(R.drawable.ic_launcher);
+				imageView1.setBackgroundResource(R.drawable.ic_launcher);
 				linearLayout.addView(imageView1);
 				linearLayout.addView(textView);
 				int isitem = new Random().nextInt(3);
