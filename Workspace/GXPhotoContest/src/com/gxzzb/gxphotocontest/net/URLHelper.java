@@ -3,7 +3,7 @@ package com.gxzzb.gxphotocontest.net;
 public class URLHelper {
 	// base url
 	private static final String URL_GX_CHANNEL = "http://news.ngzb.com.cn/channel/2013/gx/";
-	//
+	//url
 	public static final String URL_SJ_LIST = URL_GX_CHANNEL + "sj_list.php";
 	public static final String URL_SJ_ADD = URL_GX_CHANNEL + "sj_add.php";
 	public static final String URL_SJ_VIEW = URL_GX_CHANNEL + "sj_view.php";

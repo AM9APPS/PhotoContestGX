@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.ta.util.http.AsyncHttpClient;
-import com.ta.util.http.AsyncHttpResponseHandler;
 
 public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 
@@ -18,6 +17,7 @@ public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 	ProgressDialog progressDialog;
 
 	AsyncHttpClient client;
+	MyAsyncHttpResponseHandler myAsyncHttpResponseHandler;
 
 	public HttpAsyncTask(Context context1, Class<?> myClass,
 			ProgressDialog progressDialog) {
@@ -35,6 +35,7 @@ public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 	protected void onPreExecute() {
 		progressDialog.show();
 		client = new AsyncHttpClient();
+		myAsyncHttpResponseHandler = new MyAsyncHttpResponseHandler();
 		super.onPreExecute();
 	}
 
@@ -43,36 +44,9 @@ public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 		httpUrl = httpUrls[0];
 		System.out.println(httpUrl);
 
-		client.post(httpUrl, new AsyncHttpResponseHandler() {
-
-			@Override
-			public void onSuccess(String content) {
-				super.onSuccess(content);
-				strResult = content;
-			}
-
-			@Override
-			public void onStart() {
-				super.onStart();
-			}
-
-			@Override
-			public void onFailure(Throwable error) {
-				super.onFailure(error);
-			}
-
-			@Override
-			public void onFinish() {
-
-				super.onFinish();
-
-				System.out.println(strResult);
-			}
-
-		});
+		client.post(httpUrl, myAsyncHttpResponseHandler);
 
 		return null;
-
 	}
 
 	@Override
