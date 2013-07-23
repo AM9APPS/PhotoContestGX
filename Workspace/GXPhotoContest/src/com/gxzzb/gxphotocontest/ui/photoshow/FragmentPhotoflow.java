@@ -31,6 +31,8 @@ public class FragmentPhotoflow extends Fragment {
 	int firtstCount = 6;
 	// 判断是否是第一次加载
 	boolean isfirst = true;
+	//是第几页
+	int ispage = 0;
 
 	View view;
 
@@ -89,7 +91,7 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 
-		String httpUrl = URLHelper.URL_SJ_LIST + "?page=9&num=1";
+		String httpUrl = URLHelper.URL_SJ_LIST + "?page="+eachCount+"&num="+ispage;
 
 		HttpAsyncTask myhHttpAsyncTask = new HttpAsyncTask(
 				inflater.getContext(), progressDialog);

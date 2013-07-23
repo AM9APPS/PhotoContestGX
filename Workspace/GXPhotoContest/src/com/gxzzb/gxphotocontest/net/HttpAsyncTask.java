@@ -44,11 +44,11 @@ public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 		System.out.println(httpUrl);
 
 		client.post(httpUrl, new AsyncHttpResponseHandler() {
+
 			@Override
 			public void onSuccess(String content) {
 				super.onSuccess(content);
-				System.out.println(content);
-
+				strResult = content;
 			}
 
 			@Override
@@ -63,12 +63,15 @@ public class HttpAsyncTask extends AsyncTask<String, Integer, String> {
 
 			@Override
 			public void onFinish() {
+
 				super.onFinish();
+
+				System.out.println(strResult);
 			}
 
 		});
 
-		return strResult;
+		return null;
 
 	}
 
