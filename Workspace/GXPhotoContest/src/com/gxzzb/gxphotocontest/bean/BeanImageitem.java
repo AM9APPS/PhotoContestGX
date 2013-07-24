@@ -1,7 +1,10 @@
 package com.gxzzb.gxphotocontest.bean;
 
 public class BeanImageitem {
-
+	
+	public static String result = "";
+	
+	
 	private int id;
 	private String tu;
 	private String tusm;

@@ -3,6 +3,9 @@ package com.gxzzb.gxphotocontest.ui.photoshow;
 import java.util.Random;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.bean.BeanImageitem;
+import com.gxzzb.gxphotocontest.data.photoflow.DataJsonAnalysis;
+import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
 import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
 import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.bin.UiItemProgressDialog;
@@ -24,15 +27,6 @@ public class FragmentPhotoflow extends Fragment {
 	// 数据总数
 	int resultCount = 1000;
 	// 每次加载数据总数
-	int eachCount = 9;
-	// 加载了多少次
-	int pageCount = 0;
-	// 第一次加载数
-	int firtstCount = 6;
-	// 判断是否是第一次加载
-	boolean isfirst = true;
-	//是第几页
-	int ispage = 0;
 
 	View view;
 
@@ -43,6 +37,8 @@ public class FragmentPhotoflow extends Fragment {
 	LinearLayout linearLayoutcenter;
 	LinearLayout linearLayoutleft;
 	LinearLayout linearLayoutright;
+
+	BeanImageitem beanImageitem;
 
 	MyScrollViewEvents myScrollViewEvents = new MyScrollViewEvents();
 
@@ -78,9 +74,7 @@ public class FragmentPhotoflow extends Fragment {
 
 		linearLayoutright = (LinearLayout) v
 				.findViewById(R.id.linearLayout_photoflowright);
-
 		addData();
-
 		return v;
 	}
 
@@ -90,18 +84,12 @@ public class FragmentPhotoflow extends Fragment {
 	}
 
 	public void addData() {
+		initiData();
+		if (StaticString.eachCount * StaticString.pageCount < resultCount) {
+			int isitem = 0;
+			for (int i = 0; i < StaticString.eachCount; i++) {
 
-		String httpUrl = URLHelper.URL_SJ_LIST + "?page="+eachCount+"&num="+ispage;
-
-		HttpAsyncTask myhHttpAsyncTask = new HttpAsyncTask(
-				inflater.getContext(), progressDialog);
-		myhHttpAsyncTask.execute(httpUrl);
-
-		if (eachCount * pageCount < resultCount) {
-
-			for (int i = 0; i < eachCount; i++) {
-
-				int k = i + eachCount * pageCount;
+				int k = i + StaticString.eachCount * StaticString.pageCount;
 
 				if (k >= resultCount) {
 					break;
@@ -111,29 +99,49 @@ public class FragmentPhotoflow extends Fragment {
 				linearLayout.setOrientation(LinearLayout.VERTICAL);
 				ImageView imageView1 = new ImageView(inflater.getContext());
 				TextView textView = new TextView(inflater.getContext());
-				textView.setText("aadfdfdsffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffaaa");
+				textView.setText("aadfdfdsffffffffffffffffffffffffffaaa");
 				imageView1.setBackgroundResource(R.drawable.ic_launcher);
 				linearLayout.addView(imageView1);
 				linearLayout.addView(textView);
-				int isitem = new Random().nextInt(3);
-				System.out.println(isitem);
+
 				if (0 == isitem) {
 					linearLayoutleft.addView(linearLayout);
+					isitem = 1;
 					System.out.println(linearLayoutleft.getHeight());
-				}
-				if (1 == isitem) {
+				} else if (1 == isitem) {
 					linearLayoutcenter.addView(linearLayout);
+					isitem = 2;
 					System.out.println(linearLayoutcenter.getHeight());
-				}
-				if (2 == isitem) {
+				} else if (2 == isitem) {
 					linearLayoutright.addView(linearLayout);
+					isitem = 0;
 				}
 
 				// linearLayoutleft.addView(imageView1);
 				// linearLayoutright.addView(imageView3);
 			}
 
-			pageCount++;
+			StaticString.pageCount++;
+		}
+
+	}
+
+	public void initiData() {
+		// 初始化StaticString.STRRESULT
+		String httpUrl = URLHelper.URL_SJ_LIST + "?pagenum="
+				+ StaticString.eachCount + "&pageFilter="
+				+ StaticString.pageCount;
+		HttpAsyncTask httpAsyncTask = new HttpAsyncTask(httpUrl,
+				inflater.getContext());
+		httpAsyncTask.getDateforHttp();
+		if ("" == StaticString.strResUlt) {
+			System.out.println("无数据");
+		} else {
+			System.out.println(StaticString.strResUlt);
+
+			DataJsonAnalysis dataJsonAnalysis = new DataJsonAnalysis(
+					StaticString.strResUlt);
+			beanImageitem = dataJsonAnalysis.getbean();
 		}
 
 	}
@@ -148,7 +156,7 @@ public class FragmentPhotoflow extends Fragment {
 				break;
 			case MotionEvent.ACTION_UP:
 				// 如果触发监听事件，并且有内容，并且ScrollView已经拉到底部，加载一次数据
-				System.out.println(pageCount + "");
+				System.out.println(StaticString.pageCount + "");
 				if (myScrollViewEvents != null
 						&& view != null
 						&& view.getMeasuredHeight() - 30 <= scrollView

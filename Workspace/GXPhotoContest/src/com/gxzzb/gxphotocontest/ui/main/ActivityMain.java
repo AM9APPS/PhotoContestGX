@@ -1,6 +1,9 @@
 package com.gxzzb.gxphotocontest.ui.main;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
+import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
+import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow;
 
 import android.os.Bundle;
@@ -22,6 +25,14 @@ public class ActivityMain extends Activity {
 		setContentView(R.layout.activity_main);
 		button = (Button) this.findViewById(R.id.button_welcome_anter_btn);
 		button.setOnClickListener(new Myevent());
+		//初次加载数据获取
+		String httpUrl = URLHelper.URL_SJ_LIST + "?pagenum=" + StaticString.eachCount + "&pageFilter="
+				+ StaticString.pageCount;
+		HttpAsyncTask httpAsyncTask = new HttpAsyncTask(httpUrl,
+				this);
+		httpAsyncTask.getDateforHttp();
+		StaticString.pageCount++;
+
 	}
 
 	class Myevent implements OnClickListener {
@@ -31,6 +42,8 @@ public class ActivityMain extends Activity {
 			Intent intent = new Intent(ActivityMain.this,
 					ActivityPhotoShow.class);
 			ActivityMain.this.startActivity(intent);
+			
+			
 		}
 
 	}
