@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content" 
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/imageView_photoflw_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name" 
+        android:padding="0dp"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="15dp"
+        android:layout_gravity="bottom"
+        android:alpha="90" >
+
+        <TextView
+            android:id="@+id/textView_dz"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/textView_scroe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/imageView_scroe"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@+id/textView_scroe"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/scroe_icon" />
+    </RelativeLayout>
+
+</FrameLayout>

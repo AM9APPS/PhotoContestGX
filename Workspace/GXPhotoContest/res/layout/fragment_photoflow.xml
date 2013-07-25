@@ -30,7 +30,9 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical" >
+                android:orientation="vertical" 
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
             </LinearLayout>
 
             <LinearLayout

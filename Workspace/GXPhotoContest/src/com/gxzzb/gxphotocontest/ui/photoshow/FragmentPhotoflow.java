@@ -9,6 +9,9 @@ import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
 import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
 import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.bins.UiItemProgressDialog;
+import com.ta.TAApplication;
+import com.ta.util.bitmap.TABitmapCacheWork;
+import com.ta.util.bitmap.TADownloadBitmapHandler;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,16 +27,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class FragmentPhotoflow extends Fragment {
-	// 锟斤拷锟斤拷锟斤拷锟�
-	int resultCount = 1000;
-	// 每锟轿硷拷锟斤拷锟斤拷锟斤拷锟斤拷锟�
+	// // 加载数据数目
+	// int resultCount = 1000;
+	// scrollview里面的view
 	View view;
-
 	ArrayList<BeanImageitem> beanImageitems;
-
 	LayoutInflater inflater;
-
 	ScrollView scrollView;
+
+	TAApplication taApplication;
+	TABitmapCacheWork taBitmapCacheWork;
+	TADownloadBitmapHandler taDownloadBitmapHandler;
 
 	LinearLayout linearLayoutcenter;
 	LinearLayout linearLayoutleft;
@@ -46,14 +50,25 @@ public class FragmentPhotoflow extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.inflater = inflater;
+
+		taApplication = new TAApplication();
+		taBitmapCacheWork = new TABitmapCacheWork(inflater.getContext());
+		taDownloadBitmapHandler = new TADownloadBitmapHandler(
+				inflater.getContext(), 200);
+
+		taBitmapCacheWork.setProcessDataHandler(taDownloadBitmapHandler);
+		// taBitmapCacheWork.setFileCache(taApplication.getFileCache());
+
 		progressDialog = new UiItemProgressDialog().getprogressDialog(inflater
 				.getContext());
+
 		View v = inflater
 				.inflate(R.layout.fragment_photoflow, container, false);
 		TextView textView_top = (TextView) v.findViewById(R.id.textView_top);
@@ -84,49 +99,66 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 		initiData();
-		if (beanImageitems.size() * StaticString.pageCount < resultCount) {
-			int isitem = 0;
-			for (int i = 0; i < beanImageitems.size(); i++) {
-				int k = i + beanImageitems.size() * StaticString.pageCount;
+		// if (beanImageitems.size() * StaticString.pageCount < resultCount) {
+		int isitem = 0;
+		for (int i = 0; i < beanImageitems.size(); i++) {
+			// int k = i + beanImageitems.size() * StaticString.pageCount;
+			//
+			// if (k >= resultCount) {
+			// break;
+			// }
+			BeanImageitem beanImageitem = beanImageitems.get(i);
 
-				if (k >= resultCount) {
-					break;
-				}
-				BeanImageitem beanImageitem = beanImageitems.get(i);
-				LinearLayout linearLayout = new LinearLayout(
-						inflater.getContext());
-				linearLayout.setOrientation(LinearLayout.VERTICAL);
-				ImageView imageView1 = new ImageView(inflater.getContext());
-				TextView textView = new TextView(inflater.getContext());
-				textView.setText(beanImageitem.getDz());
-				imageView1.setBackgroundResource(R.drawable.ic_launcher);
-				linearLayout.addView(imageView1);
-				linearLayout.addView(textView);
+			View view_photo_item = inflater.inflate(
+					R.layout.view_photoflow_item, null);
 
-				if (0 == isitem) {
-					linearLayoutleft.addView(linearLayout);
-					isitem = 1;
-					System.out.println(linearLayoutleft.getHeight());
-				} else if (1 == isitem) {
-					linearLayoutcenter.addView(linearLayout);
-					isitem = 2;
-					System.out.println(linearLayoutcenter.getHeight());
-				} else if (2 == isitem) {
-					linearLayoutright.addView(linearLayout);
-					isitem = 0;
-				}
+			ImageView imageView = (ImageView) view_photo_item
+					.findViewById(R.id.imageView_photoflw_item);
+			
+			taBitmapCacheWork.loadFormCache(beanImageitem.getTu(), imageView);
 
-				// linearLayoutleft.addView(imageView1);
-				// linearLayoutright.addView(imageView3);
+			// imageView.setBackgroundResource(R.drawable.ic_launcher);
+
+			TextView textView_dz = (TextView) view_photo_item
+					.findViewById(R.id.textView_dz);
+			textView_dz.setText(beanImageitem.getDz());
+
+			TextView textView_scroe = (TextView) view_photo_item
+					.findViewById(R.id.textView_scroe);
+			textView_scroe.setText("" + beanImageitem.getTpnum());
+
+			// LinearLayout linearLayout = new LinearLayout(
+			// inflater.getContext());
+			// linearLayout.setOrientation(LinearLayout.VERTICAL);
+			// ImageView imageView1 = new ImageView(inflater.getContext());
+			// TextView textView = new TextView(inflater.getContext());
+			// textView.setText(beanImageitem.getDz());
+			// imageView1.setBackgroundResource(R.drawable.ic_launcher);
+			// linearLayout.addView(imageView1);
+			// linearLayout.addView(textView);
+
+			if (0 == isitem) {
+				linearLayoutleft.addView(view_photo_item);
+				isitem = 1;
+			} else if (1 == isitem) {
+				linearLayoutcenter.addView(view_photo_item);
+				isitem = 2;
+			} else if (2 == isitem) {
+				linearLayoutright.addView(view_photo_item);
+				isitem = 0;
 			}
 
-			StaticString.pageCount++;
+			// linearLayoutleft.addView(imageView1);
+			// linearLayoutright.addView(imageView3);
 		}
+
+		StaticString.pageCount++;
+		// }
 
 	}
 
 	public void initiData() {
-		//
+		// 初始化
 		String httpUrl = URLHelper.URL_SJ_LIST + "?pagenum="
 				+ StaticString.eachCount + "&pageFilter="
 				+ StaticString.pageCount;

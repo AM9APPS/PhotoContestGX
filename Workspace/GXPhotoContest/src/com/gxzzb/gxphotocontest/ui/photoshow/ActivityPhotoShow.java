@@ -1,8 +1,6 @@
 package com.gxzzb.gxphotocontest.ui.photoshow;
 
 import com.gxzzb.gxphotocontest.R;
-import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
-import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.photocamera.FragmentPhotoCamera;
 import com.gxzzb.gxphotocontest.ui.photoupload.FragmentPhotoUpload;
 import com.gxzzb.gxphotocontest.ui.photouser.FragmentPhotoUser;
