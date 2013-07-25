@@ -1,6 +1,6 @@
 package com.gxzzb.gxphotocontest.ui.photoshow;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 import com.gxzzb.gxphotocontest.R;
 import com.gxzzb.gxphotocontest.bean.BeanImageitem;
@@ -8,7 +8,7 @@ import com.gxzzb.gxphotocontest.data.photoflow.DataJsonAnalysis;
 import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
 import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
 import com.gxzzb.gxphotocontest.net.URLHelper;
-import com.gxzzb.gxphotocontest.ui.bin.UiItemProgressDialog;
+import com.gxzzb.gxphotocontest.ui.bins.UiItemProgressDialog;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,11 +24,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class FragmentPhotoflow extends Fragment {
-	// Êı¾İ×ÜÊı
+	// é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿï¿½
 	int resultCount = 1000;
-	// Ã¿´Î¼ÓÔØÊı¾İ×ÜÊı
-
+	// æ¯é”Ÿè½¿ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿï¿½
 	View view;
+
+	ArrayList<BeanImageitem> beanImageitems;
 
 	LayoutInflater inflater;
 
@@ -37,8 +38,6 @@ public class FragmentPhotoflow extends Fragment {
 	LinearLayout linearLayoutcenter;
 	LinearLayout linearLayoutleft;
 	LinearLayout linearLayoutright;
-
-	BeanImageitem beanImageitem;
 
 	MyScrollViewEvents myScrollViewEvents = new MyScrollViewEvents();
 
@@ -58,7 +57,7 @@ public class FragmentPhotoflow extends Fragment {
 		View v = inflater
 				.inflate(R.layout.fragment_photoflow, container, false);
 		TextView textView_top = (TextView) v.findViewById(R.id.textView_top);
-		textView_top.setText("ä¯ÀÀ×÷Æ·");
+		textView_top.setText("ä½œå“æ¬£èµ");
 		textView_top.setVisibility(View.VISIBLE);
 
 		scrollView = (ScrollView) v.findViewById(R.id.scrollView_photoflow);
@@ -85,21 +84,21 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 		initiData();
-		if (StaticString.eachCount * StaticString.pageCount < resultCount) {
+		if (beanImageitems.size() * StaticString.pageCount < resultCount) {
 			int isitem = 0;
-			for (int i = 0; i < StaticString.eachCount; i++) {
-
-				int k = i + StaticString.eachCount * StaticString.pageCount;
+			for (int i = 0; i < beanImageitems.size(); i++) {
+				int k = i + beanImageitems.size() * StaticString.pageCount;
 
 				if (k >= resultCount) {
 					break;
 				}
+				BeanImageitem beanImageitem = beanImageitems.get(i);
 				LinearLayout linearLayout = new LinearLayout(
 						inflater.getContext());
 				linearLayout.setOrientation(LinearLayout.VERTICAL);
 				ImageView imageView1 = new ImageView(inflater.getContext());
 				TextView textView = new TextView(inflater.getContext());
-				textView.setText("aadfdfdsffffffffffffffffffffffffffaaa");
+				textView.setText(beanImageitem.getDz());
 				imageView1.setBackgroundResource(R.drawable.ic_launcher);
 				linearLayout.addView(imageView1);
 				linearLayout.addView(textView);
@@ -127,21 +126,22 @@ public class FragmentPhotoflow extends Fragment {
 	}
 
 	public void initiData() {
-		// ³õÊ¼»¯StaticString.STRRESULT
+		//
 		String httpUrl = URLHelper.URL_SJ_LIST + "?pagenum="
 				+ StaticString.eachCount + "&pageFilter="
 				+ StaticString.pageCount;
 		HttpAsyncTask httpAsyncTask = new HttpAsyncTask(httpUrl,
 				inflater.getContext());
 		httpAsyncTask.getDateforHttp();
+
 		if ("" == StaticString.strResUlt) {
-			System.out.println("ÎŞÊı¾İ");
+			System.out.println("");
 		} else {
 			System.out.println(StaticString.strResUlt);
 
 			DataJsonAnalysis dataJsonAnalysis = new DataJsonAnalysis(
 					StaticString.strResUlt);
-			beanImageitem = dataJsonAnalysis.getbean();
+			beanImageitems = dataJsonAnalysis.getArrayList();
 		}
 
 	}
@@ -155,7 +155,7 @@ public class FragmentPhotoflow extends Fragment {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				// Èç¹û´¥·¢¼àÌıÊÂ¼ş£¬²¢ÇÒÓĞÄÚÈİ£¬²¢ÇÒScrollViewÒÑ¾­À­µ½µ×²¿£¬¼ÓÔØÒ»´ÎÊı¾İ
+				// äº‹ä»¶è§¦å‘ï¼Œæœ‰å†…å®¹ï¼Œæ»‘åŠ¨åˆ°åº•éƒ¨åˆ™åŠ è½½æ•°æ®
 				System.out.println(StaticString.pageCount + "");
 				if (myScrollViewEvents != null
 						&& view != null
