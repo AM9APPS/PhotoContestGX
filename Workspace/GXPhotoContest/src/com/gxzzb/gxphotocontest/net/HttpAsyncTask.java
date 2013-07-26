@@ -27,7 +27,7 @@ public class HttpAsyncTask {
 				progressDialog);
 	}
 
-	public void getDateforHttp() {
+	public void initistrResultforHttp() {
 		client.post(httpUrl, myAsyncHttpResponseHandler);
 	}
 

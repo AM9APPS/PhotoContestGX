@@ -1,4 +1,4 @@
-package com.gxzzb.gxphotocontest.data.photoflow;
+package com.gxzzb.gxphotocontest.datas;
 
 public class StaticString {
 	//·µ»ØµÄjson×Ö·û´®

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <include layout="@layout/view_top" />
@@ -9,7 +9,8 @@
     <ScrollView
         android:id="@+id/scrollView_photoflow"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:overScrollMode="always" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,9 +31,9 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical" 
+                android:orientation="vertical"
                 android:paddingLeft="3dp"
-                android:paddingRight="3dp">
+                android:paddingRight="3dp" >
             </LinearLayout>
 
             <LinearLayout

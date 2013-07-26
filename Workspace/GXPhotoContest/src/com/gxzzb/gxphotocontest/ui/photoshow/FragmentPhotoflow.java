@@ -4,21 +4,24 @@ import java.util.ArrayList;
 
 import com.gxzzb.gxphotocontest.R;
 import com.gxzzb.gxphotocontest.bean.BeanImageitem;
-import com.gxzzb.gxphotocontest.data.photoflow.DataJsonAnalysis;
-import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
+import com.gxzzb.gxphotocontest.data.photoflow.DataJsonAnalysisPhotoflow;
+import com.gxzzb.gxphotocontest.datas.StaticString;
 import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
 import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.bins.UiItemProgressDialog;
+import com.gxzzb.gxphotocontest.ui.photoenjoy.ActivityPhotoEnjoy;
 import com.ta.TAApplication;
 import com.ta.util.bitmap.TABitmapCacheWork;
 import com.ta.util.bitmap.TADownloadBitmapHandler;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,25 +30,31 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class FragmentPhotoflow extends Fragment {
-	// // 加载数据数目
-	// int resultCount = 1000;
 	// scrollview里面的view
 	View view;
+	// 每次加载数据的list
 	ArrayList<BeanImageitem> beanImageitems;
+	// 总共加载了的数据
+	ArrayList<BeanImageitem> sumbBeanImageitems = new ArrayList<BeanImageitem>();
+	// 总共添加了的view
+	ArrayList<View> sumViewPhotoitems = new ArrayList<View>();
+	//
 	LayoutInflater inflater;
 	ScrollView scrollView;
-
+	// thinkandroid加载图片
 	TAApplication taApplication;
 	TABitmapCacheWork taBitmapCacheWork;
 	TADownloadBitmapHandler taDownloadBitmapHandler;
-
+	//
 	LinearLayout linearLayoutcenter;
 	LinearLayout linearLayoutleft;
 	LinearLayout linearLayoutright;
-
+	//
 	MyScrollViewEvents myScrollViewEvents = new MyScrollViewEvents();
-
+	//
 	ProgressDialog progressDialog;
+	//
+	BeanImageitem beanImageitem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,43 +108,27 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 		initiData();
-		// if (beanImageitems.size() * StaticString.pageCount < resultCount) {
 		int isitem = 0;
 		for (int i = 0; i < beanImageitems.size(); i++) {
-			// int k = i + beanImageitems.size() * StaticString.pageCount;
-			//
-			// if (k >= resultCount) {
-			// break;
-			// }
-			BeanImageitem beanImageitem = beanImageitems.get(i);
-
+			beanImageitem = beanImageitems.get(i);
+			sumbBeanImageitems.add(beanImageitem);
 			View view_photo_item = inflater.inflate(
 					R.layout.view_photoflow_item, null);
-
 			ImageView imageView = (ImageView) view_photo_item
 					.findViewById(R.id.imageView_photoflw_item);
-			
-			taBitmapCacheWork.loadFormCache(beanImageitem.getTu(), imageView);
 
-			// imageView.setBackgroundResource(R.drawable.ic_launcher);
+			taBitmapCacheWork.loadFormCache(beanImageitem.getTu(), imageView);
 
 			TextView textView_dz = (TextView) view_photo_item
 					.findViewById(R.id.textView_dz);
+
 			textView_dz.setText(beanImageitem.getDz());
 
 			TextView textView_scroe = (TextView) view_photo_item
 					.findViewById(R.id.textView_scroe);
 			textView_scroe.setText("" + beanImageitem.getTpnum());
 
-			// LinearLayout linearLayout = new LinearLayout(
-			// inflater.getContext());
-			// linearLayout.setOrientation(LinearLayout.VERTICAL);
-			// ImageView imageView1 = new ImageView(inflater.getContext());
-			// TextView textView = new TextView(inflater.getContext());
-			// textView.setText(beanImageitem.getDz());
-			// imageView1.setBackgroundResource(R.drawable.ic_launcher);
-			// linearLayout.addView(imageView1);
-			// linearLayout.addView(textView);
+			sumViewPhotoitems.add(view_photo_item);
 
 			if (0 == isitem) {
 				linearLayoutleft.addView(view_photo_item);
@@ -148,12 +141,34 @@ public class FragmentPhotoflow extends Fragment {
 				isitem = 0;
 			}
 
-			// linearLayoutleft.addView(imageView1);
-			// linearLayoutright.addView(imageView3);
+		}
+		// 给每个view添加事件
+		for (int i = 0; i < sumViewPhotoitems.size(); i++) {
+			// 取出每个view所对应的数据
+			final BeanImageitem beanImageitempresent = sumbBeanImageitems
+					.get(i);
+			sumViewPhotoitems.get(i).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(inflater.getContext(),
+							ActivityPhotoEnjoy.class);
+
+					intent.putExtra("id", beanImageitempresent.getId());
+					// intent.putExtra("tusm", beanImageitempresent.getTusm());
+					// intent.putExtra("dz", beanImageitempresent.getDz());
+					// intent.putExtra("sj", beanImageitempresent.getSj());
+					// intent.putExtra("tpnum",
+					// beanImageitempresent.getTpnum());
+					// intent.putExtra("did", beanImageitempresent.getDid());
+					// intent.putExtra("tuid", beanImageitempresent.getTuid());
+
+					startActivity(intent);
+
+				}
+			});
 		}
 
 		StaticString.pageCount++;
-		// }
 
 	}
 
@@ -164,14 +179,14 @@ public class FragmentPhotoflow extends Fragment {
 				+ StaticString.pageCount;
 		HttpAsyncTask httpAsyncTask = new HttpAsyncTask(httpUrl,
 				inflater.getContext());
-		httpAsyncTask.getDateforHttp();
+		httpAsyncTask.initistrResultforHttp();
 
 		if ("" == StaticString.strResUlt) {
-			System.out.println("");
+			System.out.println("无数据");
 		} else {
 			System.out.println(StaticString.strResUlt);
-
-			DataJsonAnalysis dataJsonAnalysis = new DataJsonAnalysis(
+			// 初始化bean
+			DataJsonAnalysisPhotoflow dataJsonAnalysis = new DataJsonAnalysisPhotoflow(
 					StaticString.strResUlt);
 			beanImageitems = dataJsonAnalysis.getArrayList();
 		}
@@ -184,14 +199,12 @@ public class FragmentPhotoflow extends Fragment {
 		public boolean onTouch(View v, MotionEvent event) {
 
 			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_MOVE:
 				// 事件触发，有内容，滑动到底部则加载数据
 				System.out.println(StaticString.pageCount + "");
 				if (myScrollViewEvents != null
 						&& view != null
-						&& view.getMeasuredHeight() - 30 <= scrollView
+						&& view.getMeasuredHeight() - 50 <= scrollView
 								.getScrollY() + scrollView.getHeight()) {
 					addData();
 				}

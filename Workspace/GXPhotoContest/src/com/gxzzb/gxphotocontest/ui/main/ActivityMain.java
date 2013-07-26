@@ -1,7 +1,7 @@
 package com.gxzzb.gxphotocontest.ui.main;
 
 import com.gxzzb.gxphotocontest.R;
-import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
+import com.gxzzb.gxphotocontest.datas.StaticString;
 import com.gxzzb.gxphotocontest.net.HttpAsyncTask;
 import com.gxzzb.gxphotocontest.net.URLHelper;
 import com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow;
@@ -30,7 +30,7 @@ public class ActivityMain extends Activity {
 				+ StaticString.pageCount;
 		HttpAsyncTask httpAsyncTask = new HttpAsyncTask(httpUrl,
 				this);
-		httpAsyncTask.getDateforHttp();
+		httpAsyncTask.initistrResultforHttp();
 		StaticString.pageCount++;
 
 	}

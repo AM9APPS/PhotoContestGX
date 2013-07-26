@@ -10,11 +10,11 @@ import org.json.JSONObject;
 
 import com.gxzzb.gxphotocontest.bean.BeanImageitem;
 
-public class DataJsonAnalysis {
+public class DataJsonAnalysisPhotoflow {
 	String strResUlt;
 	ArrayList<BeanImageitem> beanImageitems;
 
-	public DataJsonAnalysis(String strResUlt) {
+	public DataJsonAnalysisPhotoflow(String strResUlt) {
 		this.strResUlt = strResUlt;
 		beanImageitems = new ArrayList<BeanImageitem>();
 		dataAnalysis();
@@ -28,7 +28,7 @@ public class DataJsonAnalysis {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//从第15个字符开始截取
+		// 从第15个字符开始截取
 		strResUlt = strResUlt.substring(15, strResUlt.length());
 
 		try {
@@ -41,7 +41,7 @@ public class DataJsonAnalysis {
 				BeanImageitem beanImageitem = new BeanImageitem();
 				JSONObject objectitem = jsonArray.optJSONObject(i);
 				// System.out.println("arrayObject:"+arrayObject);
-				//初始化bean，把bean存到数组中
+				// 初始化bean，把bean存到数组中
 				beanImageitem.setId(objectitem.optInt("id"));
 				beanImageitem.setTu(objectitem.optString("tu"));
 				beanImageitem.setTusm(objectitem.optString("tusm"));
@@ -53,7 +53,7 @@ public class DataJsonAnalysis {
 				beanImageitem.setTuw(objectitem.optInt("tuw"));
 				beanImageitem.setTuh(objectitem.optInt("tuh"));
 				beanImageitems.add(beanImageitem);
-				
+
 				System.out.println(beanImageitem.getDz());
 			}
 

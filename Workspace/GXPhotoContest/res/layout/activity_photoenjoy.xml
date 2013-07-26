@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
+
     <include layout="@layout/view_top" />
 
     <ScrollView
@@ -13,77 +13,10 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
+            android:id="@+id/linearLayout_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:id="@+id/imageView_photoenjoy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/welcome_logo" />
-
-                <TextView
-                    android:id="@+id/textView_photocontent"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" 
-                    android:text="后的送到附近的卡打立\n刻集散地立刻解放打开 \n后的送到附近的卡打\n立刻集散地立刻解放打开  "/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="true"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal" >
-
-                    <ImageView
-                        android:id="@+id/imageView_scroe_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/scroe_icon" />
-
-                    <TextView
-                        android:id="@+id/textView_scroe_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="left" 
-                        android:text="22"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:orientation="horizontal" >
-
-                    <Button
-                        android:id="@+id/button_scroe_icon"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/welcome_anter_btn"
-                        android:text="@string/scroe_icon" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -2,11 +2,13 @@ package com.gxzzb.gxphotocontest.net;
 
 import android.app.ProgressDialog;
 
-import com.gxzzb.gxphotocontest.data.photoflow.StaticString;
+import com.gxzzb.gxphotocontest.datas.StaticString;
 import com.ta.util.http.AsyncHttpResponseHandler;
 
 public class MyAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
 	ProgressDialog progressDialog;
+	
+	String string = null;
 	public MyAsyncHttpResponseHandler(ProgressDialog progressDialog){
 		this.progressDialog = progressDialog;
 	}
@@ -14,7 +16,7 @@ public class MyAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
 	@Override
 	public void onSuccess(String content) {
 		super.onSuccess(content);
-		StaticString.strResUlt = content;
+		string = content;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class MyAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
 	@Override
 	public void onFinish() {
 		super.onFinish();
+		StaticString.strResUlt = string;
 		progressDialog.dismiss();
 
 	}
