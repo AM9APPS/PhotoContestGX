@@ -70,7 +70,7 @@ public class FragmentPhotoflow extends Fragment {
 		taApplication = new TAApplication();
 		taBitmapCacheWork = new TABitmapCacheWork(inflater.getContext());
 		taDownloadBitmapHandler = new TADownloadBitmapHandler(
-				inflater.getContext(), 200);
+				inflater.getContext(), 100,200);
 
 		taBitmapCacheWork.setProcessDataHandler(taDownloadBitmapHandler);
 		// taBitmapCacheWork.setFileCache(taApplication.getFileCache());
@@ -100,6 +100,7 @@ public class FragmentPhotoflow extends Fragment {
 		addData();
 		return v;
 	}
+	
 
 	@Override
 	public void onPause() {

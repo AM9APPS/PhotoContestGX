@@ -19,7 +19,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,15 +35,29 @@ public class ActivityPhotoEnjoy extends Activity {
 
 	Intent intent;
 	String httpUrl = null;
-	TextView textView_tusm = null;
-	TextView textView_scroe = null;
 
+	// 每次加载的数目
 	ArrayList<BeanImageArrayitem> beanImageArrayitems = null;
 	BeanImageContent beanImageContent = null;
 	BeanImageArrayitem beanImageArrayitem = null;
 
+	// 总共加载了的view
+	ArrayList<View> sumviewphotocontentitems = new ArrayList<View>();
+	// 总共加载了的数据
+	ArrayList<BeanImageArrayitem> sumbeanImageArrayitems = new ArrayList<BeanImageArrayitem>();
+	// 总共加载的赞票textview
+	ArrayList<TextView> sumtextviewscores = new ArrayList<TextView>();
+	// 总共加载的button
+	ArrayList<Button> sumbuttonscores = new ArrayList<Button>();
+
 	LayoutInflater layoutInflater;
 	LinearLayout linearLayout_content;
+
+	// 判断想请求是哪个内容
+	// 0请求beanImageArrayitems beanImageContent
+	//
+	//
+	int isContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,7 @@ public class ActivityPhotoEnjoy extends Activity {
 		layoutInflater = getLayoutInflater();
 
 		httpUrl = URLHelper.URL_SJ_VIEW;
+		isContent = 0;
 
 		AsyncHttpClient client = new AsyncHttpClient();
 
@@ -72,14 +89,27 @@ public class ActivityPhotoEnjoy extends Activity {
 	}
 
 	class MyAsyncHttpResponseHandler1 extends AsyncHttpResponseHandler {
+
 		@Override
 		public void onSuccess(String content) {
 			super.onSuccess(content);
 			System.out.println("wo de " + content);
-			DataJsonAnalysisPhotoenjoy dataJsonAnalysisPhotoenjoy = new DataJsonAnalysisPhotoenjoy(
-					content);
-			beanImageArrayitems = dataJsonAnalysisPhotoenjoy.getArrayList();
-			beanImageContent = dataJsonAnalysisPhotoenjoy.getbeanImageContent();
+			switch (isContent) {
+			case 0:
+				DataJsonAnalysisPhotoenjoy dataJsonAnalysisPhotoenjoy = new DataJsonAnalysisPhotoenjoy(
+						content);
+				beanImageArrayitems = dataJsonAnalysisPhotoenjoy.getArrayList();
+				beanImageContent = dataJsonAnalysisPhotoenjoy
+						.getbeanImageContent();
+
+				break;
+			case 1:
+
+				break;
+
+			default:
+				break;
+			}
 
 		}
 
@@ -99,18 +129,45 @@ public class ActivityPhotoEnjoy extends Activity {
 
 			for (int i = 0; i < beanImageArrayitems.size(); i++) {
 				beanImageArrayitem = beanImageArrayitems.get(i);
-				View view = layoutInflater.inflate(
+				View viewphotocontentitem = layoutInflater.inflate(
 						R.layout.view_photocontent_item, null);
-				ImageView imageView = (ImageView) view
+				ImageView imageView = (ImageView) viewphotocontentitem
 						.findViewById(R.id.imageView_photoenjoy);
 				taBitmapCacheWork.loadFormCache(beanImageArrayitem.getTu(),
 						imageView);
-				TextView textView_tusm = (TextView) view.findViewById(R.id.textView_tusm);
+				TextView textView_tusm = (TextView) viewphotocontentitem
+						.findViewById(R.id.textView_tusm);
 				textView_tusm.setText(beanImageArrayitem.getTusm());
-				TextView textView_scroe = (TextView) view.findViewById(R.id.textView_scroe);
-				textView_scroe.setText(""+beanImageArrayitem.getTpnum());
+				TextView textView_scroe = (TextView) viewphotocontentitem
+						.findViewById(R.id.textView_scroe);
+				textView_scroe.setText("" + beanImageArrayitem.getTpnum());
 				System.out.println(beanImageArrayitem.getTu());
-				linearLayout_content.addView(view);
+				// 保存view
+				sumviewphotocontentitems.add(viewphotocontentitem);
+				// 保存view相应的数据
+				sumbeanImageArrayitems.add(beanImageArrayitem);
+				// 保存textviewscore
+				sumtextviewscores.add(textView_scroe);
+				// 保存button
+				sumbuttonscores.add((Button) viewphotocontentitem
+						.findViewById(R.id.button_scroe));
+				linearLayout_content.addView(viewphotocontentitem);
+			}
+
+			// 给每个button添加事件
+			for (int i = 0; i < sumbuttonscores.size(); i++) {
+				final BeanImageArrayitem beanImageArrayitem = sumbeanImageArrayitems
+						.get(i);
+				final TextView textView_scroe = sumtextviewscores.get(i);
+				sumbuttonscores.get(i).setOnClickListener(
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								textView_scroe.setText(""
+										+ beanImageArrayitem.getTuid());
+								textView_scroe.postInvalidate();
+							}
+						});
 			}
 
 		}
