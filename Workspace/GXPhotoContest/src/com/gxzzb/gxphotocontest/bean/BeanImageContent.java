@@ -5,7 +5,7 @@ public class BeanImageContent {
 	private int id;
 	private String user;
 	private String tel;
-	private int sj;
+	private String sj;
 	private String dz;
 	private int did;
 	private String web;
@@ -34,11 +34,11 @@ public class BeanImageContent {
 		this.tel = tel;
 	}
 
-	public int getSj() {
+	public String getSj() {
 		return sj;
 	}
 
-	public void setSj(int sj) {
+	public void setSj(String sj) {
 		this.sj = sj;
 	}
 

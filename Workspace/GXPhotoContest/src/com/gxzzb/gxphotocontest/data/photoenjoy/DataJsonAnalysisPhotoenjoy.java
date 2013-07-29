@@ -49,7 +49,7 @@ public class DataJsonAnalysisPhotoenjoy {
 
 			beanImageContent.setId(jsonObject.optInt("id"));
 			beanImageContent.setUser(jsonObject.optString("user"));
-			beanImageContent.setSj(jsonObject.optInt("sj"));
+			beanImageContent.setSj(jsonObject.optString("sj"));
 			beanImageContent.setDz(jsonObject.optString("dz"));
 			beanImageContent.setWeb(jsonObject.optString("web"));
 

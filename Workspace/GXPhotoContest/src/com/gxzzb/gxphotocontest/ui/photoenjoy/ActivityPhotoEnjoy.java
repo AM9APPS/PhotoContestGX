@@ -15,8 +15,10 @@ import com.ta.util.http.AsyncHttpResponseHandler;
 import com.ta.util.http.RequestParams;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -166,6 +168,11 @@ public class ActivityPhotoEnjoy extends Activity {
 								textView_scroe.setText(""
 										+ beanImageArrayitem.getTuid());
 								textView_scroe.postInvalidate();
+								System.out.println(""
+										+ beanImageContent.getSj());
+								// 获取设备号
+								TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
 							}
 						});
 			}
