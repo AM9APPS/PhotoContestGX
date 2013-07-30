@@ -8,19 +8,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.gxzzb.gxphotocontest.bean.BeanImageArrayitem;
+import com.gxzzb.gxphotocontest.bean.BeanImageContentitem;
 import com.gxzzb.gxphotocontest.bean.BeanImageContent;
 
 public class DataJsonAnalysisPhotoenjoy {
 	String strResUlt;
 	BeanImageContent beanImageContent;
-	BeanImageArrayitem beanImageArrayitem;
-	ArrayList< BeanImageArrayitem> beanImageArrayitems ; 
+	BeanImageContentitem beanImageArrayitem;
+	ArrayList< BeanImageContentitem> beanImageArrayitems ; 
 
 	public DataJsonAnalysisPhotoenjoy(String strResUlt) {
 		this.strResUlt = strResUlt;
 		beanImageContent = new BeanImageContent();
-		beanImageArrayitems = new ArrayList<BeanImageArrayitem>();
+		beanImageArrayitems = new ArrayList<BeanImageContentitem>();
 		
 		dataAnalysis();
 	}
@@ -31,14 +31,14 @@ public class DataJsonAnalysisPhotoenjoy {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(strResUlt);
+		System.out.println("wo de 1111"+strResUlt);
 		try {
 			JSONObject jsonObject = new JSONObject(strResUlt);
 			JSONArray jsonArray = jsonObject.optJSONArray("tu");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObjectimageArrayitem = jsonArray.optJSONObject(i);
-				beanImageArrayitem = new BeanImageArrayitem();
+				beanImageArrayitem = new BeanImageContentitem();
 				beanImageArrayitem.setTpnum(jsonObjectimageArrayitem.optInt("tpnum"));
 				beanImageArrayitem.setTu(jsonObjectimageArrayitem.optString("tu"));
 				beanImageArrayitem.setTuid(jsonObjectimageArrayitem.optInt("tuid"));
@@ -64,7 +64,7 @@ public class DataJsonAnalysisPhotoenjoy {
 		return beanImageContent;
 	}
 	
-	public ArrayList< BeanImageArrayitem> getArrayList(){
+	public ArrayList< BeanImageContentitem> getArrayList(){
 		return beanImageArrayitems;
 		
 	}

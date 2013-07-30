@@ -3,10 +3,11 @@ package com.gxzzb.gxphotocontest.ui.photoenjoy;
 import java.util.ArrayList;
 
 import com.gxzzb.gxphotocontest.R;
-import com.gxzzb.gxphotocontest.bean.BeanImageArrayitem;
+import com.gxzzb.gxphotocontest.bean.BeanImageContentitem;
 import com.gxzzb.gxphotocontest.bean.BeanImageContent;
 import com.gxzzb.gxphotocontest.data.photoenjoy.DataJsonAnalysisPhotoenjoy;
 import com.gxzzb.gxphotocontest.net.URLHelper;
+import com.gxzzb.gxphotocontest.support.bins.SupportMD5;
 import com.ta.TAApplication;
 import com.ta.util.bitmap.TABitmapCacheWork;
 import com.ta.util.bitmap.TADownloadBitmapHandler;
@@ -35,18 +36,19 @@ public class ActivityPhotoEnjoy extends Activity {
 	TABitmapCacheWork taBitmapCacheWork;
 	TADownloadBitmapHandler taDownloadBitmapHandler;
 
+	AsyncHttpClient client;
+
 	Intent intent;
-	String httpUrl = null;
 
 	// 每次加载的数目
-	ArrayList<BeanImageArrayitem> beanImageArrayitems = null;
+	ArrayList<BeanImageContentitem> beanImageContentitems = null;
 	BeanImageContent beanImageContent = null;
-	BeanImageArrayitem beanImageArrayitem = null;
+	BeanImageContentitem beanImageContentitem = null;
 
 	// 总共加载了的view
 	ArrayList<View> sumviewphotocontentitems = new ArrayList<View>();
 	// 总共加载了的数据
-	ArrayList<BeanImageArrayitem> sumbeanImageArrayitems = new ArrayList<BeanImageArrayitem>();
+	ArrayList<BeanImageContentitem> sumbeanImageContentitems = new ArrayList<BeanImageContentitem>();
 	// 总共加载的赞票textview
 	ArrayList<TextView> sumtextviewscores = new ArrayList<TextView>();
 	// 总共加载的button
@@ -78,10 +80,10 @@ public class ActivityPhotoEnjoy extends Activity {
 
 		layoutInflater = getLayoutInflater();
 
-		httpUrl = URLHelper.URL_SJ_VIEW;
+		String httpUrl = URLHelper.URL_SJ_VIEW;
 		isContent = 0;
 
-		AsyncHttpClient client = new AsyncHttpClient();
+		client = new AsyncHttpClient();
 
 		RequestParams params = new RequestParams();
 
@@ -100,12 +102,14 @@ public class ActivityPhotoEnjoy extends Activity {
 			case 0:
 				DataJsonAnalysisPhotoenjoy dataJsonAnalysisPhotoenjoy = new DataJsonAnalysisPhotoenjoy(
 						content);
-				beanImageArrayitems = dataJsonAnalysisPhotoenjoy.getArrayList();
+				beanImageContentitems = dataJsonAnalysisPhotoenjoy.getArrayList();
 				beanImageContent = dataJsonAnalysisPhotoenjoy
 						.getbeanImageContent();
 
 				break;
 			case 1:
+
+				System.out.println("wo de content" + content);
 
 				break;
 
@@ -128,50 +132,83 @@ public class ActivityPhotoEnjoy extends Activity {
 		@Override
 		public void onFinish() {
 			super.onFinish();
-
-			for (int i = 0; i < beanImageArrayitems.size(); i++) {
-				beanImageArrayitem = beanImageArrayitems.get(i);
-				View viewphotocontentitem = layoutInflater.inflate(
-						R.layout.view_photocontent_item, null);
-				ImageView imageView = (ImageView) viewphotocontentitem
-						.findViewById(R.id.imageView_photoenjoy);
-				taBitmapCacheWork.loadFormCache(beanImageArrayitem.getTu(),
-						imageView);
-				TextView textView_tusm = (TextView) viewphotocontentitem
-						.findViewById(R.id.textView_tusm);
-				textView_tusm.setText(beanImageArrayitem.getTusm());
-				TextView textView_scroe = (TextView) viewphotocontentitem
-						.findViewById(R.id.textView_scroe);
-				textView_scroe.setText("" + beanImageArrayitem.getTpnum());
-				System.out.println(beanImageArrayitem.getTu());
-				// 保存view
-				sumviewphotocontentitems.add(viewphotocontentitem);
-				// 保存view相应的数据
-				sumbeanImageArrayitems.add(beanImageArrayitem);
-				// 保存textviewscore
-				sumtextviewscores.add(textView_scroe);
-				// 保存button
-				sumbuttonscores.add((Button) viewphotocontentitem
-						.findViewById(R.id.button_scroe));
-				linearLayout_content.addView(viewphotocontentitem);
+			if (0 == isContent) {
+				for (int i = 0; i < beanImageContentitems.size(); i++) {
+					beanImageContentitem = beanImageContentitems.get(i);
+					View viewphotocontentitem = layoutInflater.inflate(
+							R.layout.view_photocontent_item, null);
+					ImageView imageView = (ImageView) viewphotocontentitem
+							.findViewById(R.id.imageView_photoenjoy);
+					taBitmapCacheWork.loadFormCache(
+							beanImageContentitem.getTu(), imageView);
+					TextView textView_tusm = (TextView) viewphotocontentitem
+							.findViewById(R.id.textView_tusm);
+					textView_tusm.setText(beanImageContentitem.getTusm());
+					TextView textView_scroe = (TextView) viewphotocontentitem
+							.findViewById(R.id.textView_scroe);
+					textView_scroe
+							.setText("" + beanImageContentitem.getTpnum());
+					System.out.println(beanImageContentitem.getTu());
+					// 保存view
+					sumviewphotocontentitems.add(viewphotocontentitem);
+					// 保存view相应的数据
+					sumbeanImageContentitems.add(beanImageContentitem);
+					// 保存textviewscore
+					sumtextviewscores.add(textView_scroe);
+					// 保存button
+					sumbuttonscores.add((Button) viewphotocontentitem
+							.findViewById(R.id.button_scroe));
+					linearLayout_content.addView(viewphotocontentitem);
+				}
 			}
-
 			// 给每个button添加事件
 			for (int i = 0; i < sumbuttonscores.size(); i++) {
-				final BeanImageArrayitem beanImageArrayitem = sumbeanImageArrayitems
+				final BeanImageContentitem beanImageContentitemEV = sumbeanImageContentitems
 						.get(i);
 				final TextView textView_scroe = sumtextviewscores.get(i);
 				sumbuttonscores.get(i).setOnClickListener(
 						new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								textView_scroe.setText(""
-										+ beanImageArrayitem.getTuid());
-								textView_scroe.postInvalidate();
-								System.out.println(""
-										+ beanImageContent.getSj());
-								// 获取设备号
+								String httpUrl = URLHelper.URL_SJ_TP;
+								isContent = 1;
+								
 								TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+								// 获取设备号
+								String deviceId = telephonyManager
+										.getDeviceId();
+								System.out.println("deviceId===:"+deviceId);
+								// 获取手机号码
+								String telephonyNumber = telephonyManager
+										.getLine1Number();
+                                System.out.println("telephonyNumber===:"+telephonyNumber);
+								// 时间戳
+								Long ltimeMillis = System.currentTimeMillis();
+								System.out.println("ltimeMillis===:" + ltimeMillis);
+								
+								Long timeMillis = (ltimeMillis * 2 - 3);
+								System.out.println("timeMillis===:" + timeMillis);
+								SupportMD5 supportMD5 = new SupportMD5();
+								// 获取32位MD5加密验证码
+								String lzm = supportMD5.GetMD5Code(timeMillis
+										.toString());
+								System.out.println("lzm===:" + lzm);
+
+								RequestParams params = new RequestParams();
+								params.put("tuid",String.valueOf(beanImageContentitemEV.getTuid()));
+								
+								params.put("lzm", lzm);
+								params.put("sj", ltimeMillis.toString());
+								params.put("tel", telephonyNumber);
+								params.put("did", deviceId);
+
+								client.post(httpUrl, params,
+										new MyAsyncHttpResponseHandler1());
+								
+								textView_scroe.setText(""
+										+ beanImageContentitemEV.getTuid());
+								textView_scroe.postInvalidate();
+
 
 							}
 						});

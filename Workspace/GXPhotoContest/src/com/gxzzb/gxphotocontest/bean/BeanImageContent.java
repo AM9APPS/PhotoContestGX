@@ -9,6 +9,8 @@ public class BeanImageContent {
 	private String dz;
 	private int did;
 	private String web;
+	private String webinfo;
+	
 
 	public int getId() {
 		return id;
@@ -65,5 +67,14 @@ public class BeanImageContent {
 	public void setWeb(String web) {
 		this.web = web;
 	}
+
+	public String getWebinfo() {
+		return webinfo;
+	}
+
+	public void setWebinfo(String webinfo) {
+		this.webinfo = webinfo;
+	}
+	
 
 }

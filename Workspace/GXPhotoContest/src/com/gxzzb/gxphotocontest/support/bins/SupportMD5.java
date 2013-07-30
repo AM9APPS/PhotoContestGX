@@ -5,50 +5,55 @@ import java.security.NoSuchAlgorithmException;
 
 public class SupportMD5 {
 
-	String result16;
-	String result32;
+	 // 全局数组
+    private final static String[] strDigits = { "0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
-	public SupportMD5(String string) {
-		MD5(string);
-	}
+    public SupportMD5() {
+    }
 
-	private void MD5(String string) {
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			messageDigest.update(string.getBytes());
-			byte b[] = messageDigest.digest();
+    // 返回形式为数字跟字符串
+    private static String byteToArrayString(byte bByte) {
+        int iRet = bByte;
+        // System.out.println("iRet="+iRet);
+        if (iRet < 0) {
+            iRet += 256;
+        }
+        int iD1 = iRet / 16;
+        int iD2 = iRet % 16;
+        return strDigits[iD1] + strDigits[iD2];
+    }
 
-			int i;
-
-			StringBuffer buf = new StringBuffer("");
-			for (int offset = 0; offset < b.length; offset++) {
-				i = b[offset];
-				if (i < 0) {
-					i += 256;
-				}
-				if (i < 16) {
-					buf.append("0");
-				}
-				buf.append(Integer.toHexString(i));
-			}
-
-			result16 = buf.toString();
-			System.out.println("result: " + buf.toString());// 32位的加密
-			result32 = buf.toString().substring(8, 24);
-			System.out.println("result: " + buf.toString().substring(8, 24));// 16位的加密
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+    // 返回形式只为数字
+	private static String byteToNum(byte bByte) {
+		int iRet = bByte;
+		System.out.println("iRet1=" + iRet);
+		if (iRet < 0) {
+			iRet += 256;
 		}
+		return String.valueOf(iRet);
 	}
 
-	public String get16MD5() {
-		return result16;
-	}
+    // 转换字节数组为16进制字串
+    private static String byteToString(byte[] bByte) {
+        StringBuffer sBuffer = new StringBuffer();
+        for (int i = 0; i < bByte.length; i++) {
+            sBuffer.append(byteToArrayString(bByte[i]));
+        }
+        return sBuffer.toString();
+    }
 
-	public String get32MD5() {
-		return result32;
-
-	}
+    public static String GetMD5Code(String string) {
+        String resultString = null;
+        try {
+            resultString = new String(string);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // md.digest() 该函数返回值为存放哈希值结果的byte数组
+            resultString = byteToString(md.digest(string.getBytes()));
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+        }
+        return resultString;
+    }
 
 }

@@ -23,15 +23,13 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="5dp" >
+                android:orientation="vertical" >
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout_photoflowcenter"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="2dp"
@@ -42,7 +40,6 @@
                 android:id="@+id/linearLayout_photoflowright"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="vertical" >
             </LinearLayout>
