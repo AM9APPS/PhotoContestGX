@@ -10,5 +10,7 @@
     <string name="back">返回</string>
     <string name="share">分享</string>
     <string name="scroe_icon">赞一个</string>
+    <string name="title_activity_camera_up_load">CameraUpLoad</string>
+    <string name="title_activity_photo_upload">PhotoUpload</string>
 
 </resources>

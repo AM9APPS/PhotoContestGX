@@ -5,9 +5,11 @@ import com.gxzzb.gxphotocontest.ui.photocamera.FragmentPhotoCamera;
 import com.gxzzb.gxphotocontest.ui.photoupload.FragmentPhotoUpload;
 import com.gxzzb.gxphotocontest.ui.photouser.FragmentPhotoUser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -21,7 +23,7 @@ public class ActivityPhotoShow extends FragmentActivity {
 	FragmentTabHost fragmentTabHost;
 	TabWidget tabWidget;
 	String[] arrayitem = { "浏览作品", "我的作品", "拍照上传", "相册上传" };
-	Class[] fragmentArray = { FragmentPhotoflow.class, FragmentPhotoUser.class,
+	Class[] fragmentArray = { FragmentPhotoUser.class, FragmentPhotoflow.class,
 			FragmentPhotoCamera.class, FragmentPhotoUpload.class };
 	int[] imagesitem = { R.drawable.photo_icon, R.drawable.user_icon,
 			R.drawable.camera_icon, R.drawable.upload_icon };
@@ -69,8 +71,17 @@ public class ActivityPhotoShow extends FragmentActivity {
 			// 设置Tab按钮的背景
 			fragmentTabHost.getTabWidget().getChildAt(i)
 					.setBackgroundResource(R.drawable.bottom_bar_bg);
-
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	public View getMenuItem(int i) {
