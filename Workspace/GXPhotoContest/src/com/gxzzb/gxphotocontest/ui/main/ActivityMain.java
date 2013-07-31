@@ -23,7 +23,7 @@ import com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow;
 
 public class ActivityMain extends Activity {
 
-	Button button;
+//	Button button;
 	private LinearLayout wel_ly01;
 	private LinearLayout wel_ly02;
 	private ImageView img_view_logo;
@@ -49,8 +49,8 @@ public class ActivityMain extends Activity {
 		
 		wel_ly02 = (LinearLayout)findViewById(R.id.wel_ly02);
 		md_texview();
-		button = (Button) this.findViewById(R.id.btn01);
-		button.setOnClickListener(new Myevent());
+		btn01 = (Button) this.findViewById(R.id.btn01);
+		btn01.setOnClickListener(new Myevent());
 		// 初次加载数据获取
 		String httpUrl = URLHelper.URL_SJ_LIST + "?pagenum="
 				+ StaticString.eachCount + "&pageFilter="
