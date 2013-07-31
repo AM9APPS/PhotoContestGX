@@ -33,10 +33,15 @@
         android:orientation="vertical" >
         <Button 
             android:id="@+id/btn01"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_01"
             android:gravity="center"
+            android:background="@drawable/nine_png"           
+            android:paddingLeft="0px"
+            android:paddingTop="0px"
+            android:paddingRight="0px"
+            android:paddingBottom="0px"
             
             />
         
