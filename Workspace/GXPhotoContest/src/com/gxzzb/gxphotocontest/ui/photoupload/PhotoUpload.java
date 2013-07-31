@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import com.gxzzb.gxphotocontest.R;
 
 public class PhotoUpload extends Activity {
 
+	LinearLayout ly_pload;
 	private static int RESULT_LOAD_IMAGE = 1;
 
 	@Override
@@ -25,10 +28,12 @@ public class PhotoUpload extends Activity {
 		setContentView(R.layout.activity_photo_upload);
 		setTitle("本地图片上传");
 
+		ly_pload = (LinearLayout) findViewById(R.id.img_load);
+
 		Intent i = new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
 		startActivityForResult(i, RESULT_LOAD_IMAGE);
+
 	}
 
 	@Override
@@ -50,13 +55,12 @@ public class PhotoUpload extends Activity {
 			ImageView imageView = new ImageView(this);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
-			LinearLayout ly_pload = (LinearLayout) findViewById(R.id.img_load);
-
 			Button btn_submit = new Button(this);
 			btn_submit.setText("提交");
 
 			EditText edit = new EditText(this);
 
+			// ly_pload.removeView(btn_submit);
 			ly_pload.addView(imageView);
 			ly_pload.addView(edit);
 			ly_pload.addView(btn_submit);
