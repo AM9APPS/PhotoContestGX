@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,7 +42,7 @@ public class PhotoUpload extends Activity {
 				&& null != data) {
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
+            
 			Cursor cursor = getContentResolver().query(selectedImage,
 					filePathColumn, null, null, null);
 			cursor.moveToFirst();

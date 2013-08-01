@@ -17,6 +17,7 @@ public class BeanTpnum {
 		return tpnum;
 	}
 
+	
 	public void setTpnum(String tpnum) {
 		this.tpnum = tpnum;
 	}

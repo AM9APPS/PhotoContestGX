@@ -215,8 +215,10 @@ public class ActivityPhotoEnjoy extends Activity {
 				super.onFinish();
 				if ("" != beanTpnum.getTpnum()) {
 					textView.setText(beanTpnum.getTpnum());
+					Toast.makeText(getApplicationContext(), "已赞!!!",
+							Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(getApplicationContext(), "每个用户只能赞一次",
+					Toast.makeText(getApplicationContext(), "每个用户只能赞一次!",
 							Toast.LENGTH_SHORT).show();
 				}
 

@@ -14,13 +14,13 @@ import com.gxzzb.gxphotocontest.bean.BeanImageContent;
 public class DataJsonAnalysisPhotoenjoy {
 	String strResUlt;
 	BeanImageContent beanImageContent;
-	BeanImageContentitem beanImageArrayitem;
-	ArrayList< BeanImageContentitem> beanImageArrayitems ; 
+	BeanImageContentitem beanImageContentitem;
+	ArrayList< BeanImageContentitem> beanImageContentitems ; 
 
 	public DataJsonAnalysisPhotoenjoy(String strResUlt) {
 		this.strResUlt = strResUlt;
 		beanImageContent = new BeanImageContent();
-		beanImageArrayitems = new ArrayList<BeanImageContentitem>();
+		beanImageContentitems = new ArrayList<BeanImageContentitem>();
 		
 		dataAnalysis();
 	}
@@ -38,12 +38,12 @@ public class DataJsonAnalysisPhotoenjoy {
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObjectimageArrayitem = jsonArray.optJSONObject(i);
-				beanImageArrayitem = new BeanImageContentitem();
-				beanImageArrayitem.setTpnum(jsonObjectimageArrayitem.optInt("tpnum"));
-				beanImageArrayitem.setTu(jsonObjectimageArrayitem.optString("tu"));
-				beanImageArrayitem.setTuid(jsonObjectimageArrayitem.optInt("tuid"));
-				beanImageArrayitem.setTusm(jsonObjectimageArrayitem.optString("tusm"));
-				beanImageArrayitems.add(beanImageArrayitem);
+				beanImageContentitem = new BeanImageContentitem();
+				beanImageContentitem.setTpnum(jsonObjectimageArrayitem.optInt("tpnum"));
+				beanImageContentitem.setTu(jsonObjectimageArrayitem.optString("tu"));
+				beanImageContentitem.setTuid(jsonObjectimageArrayitem.optInt("tuid"));
+				beanImageContentitem.setTusm(jsonObjectimageArrayitem.optString("tusm"));
+				beanImageContentitems.add(beanImageContentitem);
 
 			}
 
@@ -65,7 +65,7 @@ public class DataJsonAnalysisPhotoenjoy {
 	}
 	
 	public ArrayList< BeanImageContentitem> getArrayList(){
-		return beanImageArrayitems;
+		return beanImageContentitems;
 		
 	}
 

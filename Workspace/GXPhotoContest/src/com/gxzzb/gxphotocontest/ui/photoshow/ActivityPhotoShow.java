@@ -22,7 +22,7 @@ public class ActivityPhotoShow extends FragmentActivity {
 	FragmentTabHost fragmentTabHost;
 	TabWidget tabWidget;
 	String[] arrayitem = { "浏览作品", "我的作品", "拍照上传", "相册上传" };
-	Class[] fragmentArray = { FragmentPhotoflow.class,FragmentPhotoUser.class,
+	Class[] fragmentArray = { FragmentPhotoflow.class, FragmentPhotoUser.class,
 			FragmentPhotoCamera.class, FragmentPhotoUpload.class };
 	int[] imagesitem = { R.drawable.photo_icon, R.drawable.user_icon,
 			R.drawable.camera_icon, R.drawable.upload_icon };

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.ui.photoshow.ActivityPhotoShow;
 
 public class CameraUpLoad extends Activity {
 
@@ -38,6 +39,9 @@ public class CameraUpLoad extends Activity {
 			if (requestCode != 0) {
 				return;
 			}
+			if (null == data) {
+				return;
+			}
 			super.onActivityResult(requestCode, resultCode, data);
 			Bundle extras = data.getExtras();
 			Bitmap b = (Bitmap) extras.get("data");
@@ -59,7 +63,7 @@ public class CameraUpLoad extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// startActivity(new Intent(this, ActivityPhotoShow.class));
+			startActivity(new Intent(this, ActivityPhotoShow.class));
 			finish();
 		}
 
