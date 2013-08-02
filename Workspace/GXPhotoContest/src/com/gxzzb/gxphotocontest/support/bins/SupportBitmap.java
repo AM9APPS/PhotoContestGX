@@ -27,7 +27,7 @@ public class SupportBitmap {
 		try {
 			baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-			//
+			//×ª³Ébyte[]
 			byte[] byteArray = baos.toByteArray();
 			//
 			base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
