@@ -8,15 +8,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.gxzzb.gxphotocontest.bean.BeanFilter;
 import com.gxzzb.gxphotocontest.bean.BeanImageitem;
 
 public class DataJsonAnalysisPhotoflow {
 	String strResUlt;
 	ArrayList<BeanImageitem> beanImageitems;
+	BeanFilter beanFilter;
 
 	public DataJsonAnalysisPhotoflow(String strResUlt) {
 		this.strResUlt = strResUlt;
 		beanImageitems = new ArrayList<BeanImageitem>();
+		beanFilter = new BeanFilter();
 		dataAnalysis();
 	}
 
@@ -28,34 +31,40 @@ public class DataJsonAnalysisPhotoflow {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// 从第15个字符开始截取
-		strResUlt = strResUlt.substring(15, strResUlt.length());
+		
 
 		try {
+			JSONObject filter = new JSONObject(strResUlt);
+			beanFilter.setFilter(filter.optString("Filter"));
+			if(beanFilter.getFilter().equals("ok")){
+				// 从第15个字符开始截取
+				strResUlt = strResUlt.substring(15, strResUlt.length());
+				JSONObject jsonObject = new JSONObject(strResUlt);
+				System.out.println("strResUlt:" + strResUlt);
+				JSONArray jsonArray = jsonObject.optJSONArray("listitem");
 
-			JSONObject jsonObject = new JSONObject(strResUlt);
-			System.out.println("strResUlt:" + strResUlt);
-			JSONArray jsonArray = jsonObject.optJSONArray("listitem");
+				for (int i = 0; i < jsonArray.length(); i++) {
+					BeanImageitem beanImageitem = new BeanImageitem();
+					JSONObject objectitem = jsonArray.optJSONObject(i);
+					// System.out.println("arrayObject:"+arrayObject);
+					// 初始化bean，把bean存到数组中
+					beanImageitem.setId(objectitem.optInt("id"));
+					beanImageitem.setTu(objectitem.optString("tu"));
+					beanImageitem.setTusm(objectitem.optString("tusm"));
+					beanImageitem.setTuid(objectitem.optInt("tuid"));
+					beanImageitem.setTpnum(objectitem.optInt("tpnum"));
+					beanImageitem.setSj(objectitem.optString("sj"));
+					beanImageitem.setDz(objectitem.optString("dz"));
+					beanImageitem.setDid(objectitem.optInt("did"));
+					beanImageitem.setTuw(objectitem.optInt("tuw"));
+					beanImageitem.setTuh(objectitem.optInt("tuh"));
+					beanImageitems.add(beanImageitem);
 
-			for (int i = 0; i < jsonArray.length(); i++) {
-				BeanImageitem beanImageitem = new BeanImageitem();
-				JSONObject objectitem = jsonArray.optJSONObject(i);
-				// System.out.println("arrayObject:"+arrayObject);
-				// 初始化bean，把bean存到数组中
-				beanImageitem.setId(objectitem.optInt("id"));
-				beanImageitem.setTu(objectitem.optString("tu"));
-				beanImageitem.setTusm(objectitem.optString("tusm"));
-				beanImageitem.setTuid(objectitem.optInt("tuid"));
-				beanImageitem.setTpnum(objectitem.optInt("tpnum"));
-				beanImageitem.setSj(objectitem.optString("sj"));
-				beanImageitem.setDz(objectitem.optString("dz"));
-				beanImageitem.setDid(objectitem.optInt("did"));
-				beanImageitem.setTuw(objectitem.optInt("tuw"));
-				beanImageitem.setTuh(objectitem.optInt("tuh"));
-				beanImageitems.add(beanImageitem);
-
-				System.out.println(beanImageitem.getDz());
+					System.out.println(beanImageitem.getDz());
+				}
 			}
+			
+			
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -64,6 +73,11 @@ public class DataJsonAnalysisPhotoflow {
 
 	public ArrayList<BeanImageitem> getArrayList() {
 		return beanImageitems;
+	}
+	
+	public BeanFilter getBeanFilter(){
+		return beanFilter;
+		
 	}
 
 }

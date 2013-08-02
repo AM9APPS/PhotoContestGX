@@ -35,6 +35,7 @@ public class ActivityPhotoShow extends FragmentActivity {
 
 		initiView();
 
+		
 		// fragmentTabHost.addTab(tabHost.newTabSpec("tab0")
 		// .setIndicator(getMenuItem(R.drawable.photo_icon, arrayitem[0]))
 		// .setContent(R.id.linearLayout_photo));

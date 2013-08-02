@@ -3,6 +3,7 @@ package com.gxzzb.gxphotocontest.ui.photoshow;
 import java.util.ArrayList;
 
 import com.gxzzb.gxphotocontest.R;
+import com.gxzzb.gxphotocontest.bean.BeanFilter;
 import com.gxzzb.gxphotocontest.bean.BeanImageitem;
 import com.gxzzb.gxphotocontest.data.photoflow.DataJsonAnalysisPhotoflow;
 import com.gxzzb.gxphotocontest.datas.StaticString;
@@ -14,10 +15,12 @@ import com.ta.TAApplication;
 import com.ta.util.bitmap.TABitmapCacheWork;
 import com.ta.util.bitmap.TADownloadBitmapHandler;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,12 +29,16 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FragmentPhotoflow extends Fragment {
 	// scrollview里面的view
 	View view;
+	// 判断是否有数据
+	BeanFilter beanFilter;
 	// 每次加载数据的list
 	ArrayList<BeanImageitem> beanImageitems;
 	// 总共加载了的数据
@@ -66,11 +73,14 @@ public class FragmentPhotoflow extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.inflater = inflater;
+		// 屏幕宽高
+		int screenW = getResources().getDisplayMetrics().widthPixels;
+		// int screenH = getResources().getDisplayMetrics().heightPixels;
 
 		taApplication = new TAApplication();
 		taBitmapCacheWork = new TABitmapCacheWork(inflater.getContext());
 		taDownloadBitmapHandler = new TADownloadBitmapHandler(
-				inflater.getContext(), 100,200);
+				inflater.getContext(), 100, 200);
 
 		taBitmapCacheWork.setProcessDataHandler(taDownloadBitmapHandler);
 		// taBitmapCacheWork.setFileCache(taApplication.getFileCache());
@@ -88,6 +98,8 @@ public class FragmentPhotoflow extends Fragment {
 		scrollView.setOnTouchListener(myScrollViewEvents);
 
 		view = scrollView.getChildAt(0);
+		// 计算三个linearlayout宽
+		int linearW = (screenW - 20) / 3;
 
 		linearLayoutleft = (LinearLayout) v
 				.findViewById(R.id.linearLayout_photoflowleft);
@@ -97,10 +109,26 @@ public class FragmentPhotoflow extends Fragment {
 
 		linearLayoutright = (LinearLayout) v
 				.findViewById(R.id.linearLayout_photoflowright);
+
+		// 设置三个linearlayout的宽度参数
+		LayoutParams layoutleftParams = (LayoutParams) linearLayoutleft
+				.getLayoutParams();
+		layoutleftParams.width = linearW;
+		linearLayoutleft.setLayoutParams(layoutleftParams);
+
+		LayoutParams layoutcenterParams = (LayoutParams) linearLayoutcenter
+				.getLayoutParams();
+		layoutcenterParams.width = linearW;
+		linearLayoutcenter.setLayoutParams(layoutcenterParams);
+
+		LayoutParams layoutrightParams = (LayoutParams) linearLayoutright
+				.getLayoutParams();
+		layoutrightParams.width = linearW;
+		linearLayoutright.setLayoutParams(layoutrightParams);
+
 		addData();
 		return v;
 	}
-	
 
 	@Override
 	public void onPause() {
@@ -109,67 +137,97 @@ public class FragmentPhotoflow extends Fragment {
 
 	public void addData() {
 		initiData();
-		int isitem = 0;
-		for (int i = 0; i < beanImageitems.size(); i++) {
-			beanImageitem = beanImageitems.get(i);
-			sumbBeanImageitems.add(beanImageitem);
-			View view_photo_item = inflater.inflate(
-					R.layout.view_photoflow_item, null);
-			ImageView imageView = (ImageView) view_photo_item
-					.findViewById(R.id.imageView_photoflw_item);
 
-			taBitmapCacheWork.loadFormCache(beanImageitem.getTu(), imageView);
+		if (beanFilter.getFilter().equals("ok")) {
 
-			TextView textView_dz = (TextView) view_photo_item
-					.findViewById(R.id.textView_dz);
+			int isitem = 0;
+			for (int i = 0; i < beanImageitems.size(); i++) {
+				beanImageitem = beanImageitems.get(i);
+				sumbBeanImageitems.add(beanImageitem);
+				View view_photo_item = inflater.inflate(
+						R.layout.view_photoflow_item, null);
+				ImageView imageView = (ImageView) view_photo_item
+						.findViewById(R.id.imageView_photoflw_item);
 
-			textView_dz.setText(beanImageitem.getDz());
+				taBitmapCacheWork.loadFormCache(beanImageitem.getTu(),
+						imageView);
 
-			TextView textView_scroe = (TextView) view_photo_item
-					.findViewById(R.id.textView_scroe);
-			textView_scroe.setText("" + beanImageitem.getTpnum());
+				TextView textView_dz = (TextView) view_photo_item
+						.findViewById(R.id.textView_dz);
 
-			sumViewPhotoitems.add(view_photo_item);
+				textView_dz.setText(beanImageitem.getDz());
 
-			if (0 == isitem) {
-				linearLayoutleft.addView(view_photo_item);
-				isitem = 1;
-			} else if (1 == isitem) {
-				linearLayoutcenter.addView(view_photo_item);
-				isitem = 2;
-			} else if (2 == isitem) {
-				linearLayoutright.addView(view_photo_item);
-				isitem = 0;
+				TextView textView_scroe = (TextView) view_photo_item
+						.findViewById(R.id.textView_scroe);
+				textView_scroe.setText("" + beanImageitem.getTpnum());
+
+				sumViewPhotoitems.add(view_photo_item);
+
+				if (0 == isitem) {
+					linearLayoutleft.addView(view_photo_item);
+					if (linearLayoutleft.getChildCount() > 16) {
+						linearLayoutleft.removeView(linearLayoutleft
+								.getChildAt(0));
+					}
+					isitem = 1;
+				} else if (1 == isitem) {
+					linearLayoutcenter.addView(view_photo_item);
+					if (linearLayoutcenter.getChildCount() > 16) {
+						linearLayoutcenter.removeView(linearLayoutcenter
+								.getChildAt(0));
+					}
+					isitem = 2;
+				} else if (2 == isitem) {
+					linearLayoutright.addView(view_photo_item);
+					if (linearLayoutright.getChildCount() > 16) {
+						linearLayoutright.removeView(linearLayoutright
+								.getChildAt(0));
+					}
+					isitem = 0;
+				}
+
 			}
 
+			// 给每个view添加事件
+			for (int i = 0; i < sumViewPhotoitems.size(); i++) {
+				// 取出每个view所对应的数据
+				final BeanImageitem beanImageitempresent = sumbBeanImageitems
+						.get(i);
+				sumViewPhotoitems.get(i).setOnClickListener(
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent(inflater
+										.getContext(), ActivityPhotoEnjoy.class);
+
+								intent.putExtra("id",
+										beanImageitempresent.getId());
+								// intent.putExtra("tusm",
+								// beanImageitempresent.getTusm());
+								// intent.putExtra("dz",
+								// beanImageitempresent.getDz());
+								// intent.putExtra("sj",
+								// beanImageitempresent.getSj());
+								// intent.putExtra("tpnum",
+								// beanImageitempresent.getTpnum());
+								// intent.putExtra("did",
+								// beanImageitempresent.getDid());
+								// intent.putExtra("tuid",
+								// beanImageitempresent.getTuid());
+
+								startActivity(intent);
+
+							}
+						});
+			}
+
+			StaticString.pageCount++;
+
+		} else {
+			StaticString.pageCount = 0;
+			Toast.makeText(inflater.getContext(), "没有作品了!", Toast.LENGTH_SHORT)
+					.show();
 		}
-		// 给每个view添加事件
-		for (int i = 0; i < sumViewPhotoitems.size(); i++) {
-			// 取出每个view所对应的数据
-			final BeanImageitem beanImageitempresent = sumbBeanImageitems
-					.get(i);
-			sumViewPhotoitems.get(i).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(inflater.getContext(),
-							ActivityPhotoEnjoy.class);
-
-					intent.putExtra("id", beanImageitempresent.getId());
-					// intent.putExtra("tusm", beanImageitempresent.getTusm());
-					// intent.putExtra("dz", beanImageitempresent.getDz());
-					// intent.putExtra("sj", beanImageitempresent.getSj());
-					// intent.putExtra("tpnum",
-					// beanImageitempresent.getTpnum());
-					// intent.putExtra("did", beanImageitempresent.getDid());
-					// intent.putExtra("tuid", beanImageitempresent.getTuid());
-
-					startActivity(intent);
-
-				}
-			});
-		}
-
-		StaticString.pageCount++;
 
 	}
 
@@ -190,6 +248,7 @@ public class FragmentPhotoflow extends Fragment {
 			DataJsonAnalysisPhotoflow dataJsonAnalysis = new DataJsonAnalysisPhotoflow(
 					StaticString.strResUlt);
 			beanImageitems = dataJsonAnalysis.getArrayList();
+			beanFilter = dataJsonAnalysis.getBeanFilter();
 		}
 
 	}
@@ -198,21 +257,13 @@ public class FragmentPhotoflow extends Fragment {
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_MOVE:
-				// 事件触发，有内容，滑动到底部则加载数据
-				System.out.println(StaticString.pageCount + "");
-				if (myScrollViewEvents != null
-						&& view != null
-						&& view.getMeasuredHeight() - 50 <= scrollView
-								.getScrollY() + scrollView.getHeight()) {
-					addData();
-				}
-				break;
-
-			default:
-				break;
+			// 事件触发，有内容，滑动到底部则加载数据
+			System.out.println(StaticString.pageCount + "");
+			if (myScrollViewEvents != null
+					&& view != null
+					&& view.getMeasuredHeight() - 50 <= scrollView.getScrollY()
+							+ scrollView.getHeight()) {
+				addData();
 			}
 
 			return false;

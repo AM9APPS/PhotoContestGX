@@ -32,7 +32,12 @@ public class DataJsonAnalysisPhotoenjoy {
 			e1.printStackTrace();
 		}
 		System.out.println("wo de 1111"+strResUlt);
+		
+		
+		
 		try {
+			
+			
 			JSONObject jsonObject = new JSONObject(strResUlt);
 			JSONArray jsonArray = jsonObject.optJSONArray("tu");
 

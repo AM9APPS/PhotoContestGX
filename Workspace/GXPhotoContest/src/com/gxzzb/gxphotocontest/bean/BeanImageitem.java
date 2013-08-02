@@ -12,7 +12,7 @@ public class BeanImageitem {
 	private int did;
 	private int tuw;
 	private int tuh;
-	
+
 	public int getId() {
 		return id;
 	}
